@@ -1,0 +1,32 @@
+[
+  {
+    "author": "William Shakespeare",
+    "date": "1597",
+    "title": "Romeo and Juliet"
+  },
+  {
+    "author": "Charles Dickens",
+    "date": "1838",
+    "title": "Oliver Twist"
+  },
+  {
+    "author": "George Orwell",
+    "date": "1949",
+    "title": "Nineteen Eighty-Four"
+  },
+  {
+    "author": "Lewis Carroll",
+    "date": "1865",
+    "title": "Alice’s Adventures in Wonderland"
+  },
+  {
+    "author": "Charlotte Bronte",
+    "date": "1847",
+    "title": "Jane Eyre"
+  },
+  {
+    "author": "Theodore Dreiser",
+    "date": "1925",
+    "title": "American Tragedy"
+  }
+]
