@@ -40,7 +40,9 @@ export class BookDialogComponent extends DialogComponent<DialogModel, Book> impl
     if(control.value) {
       let title =  this.filterPipe.transform(this.books, control.value);
       if(this.editMode) {
-        this.bookTitles.splice(this.bookTitles.indexOf(this.book.title), 1);
+        if(this.bookTitles.indexOf(this.book.title) !== -1) {
+          this.bookTitles.splice(this.bookTitles.indexOf(this.book.title), 1);
+        }
       }
       if(this.bookTitles.indexOf(title) !== -1) {
         return {'isExistTitle': true}

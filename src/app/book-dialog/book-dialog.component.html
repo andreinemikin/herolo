@@ -21,10 +21,10 @@
                formControlName="title"
                placeholder="Enter title">
         <div *ngIf="editForm.get('title').invalid && (editForm.get('title').dirty || editForm.get('title').touched)">
-          <div class="alert alert-danger" *ngIf="editForm.get('title')?.errors['isExistTitle']">
+          <div class="alert alert-danger" *ngIf="editForm.get('title').errors['isExistTitle']">
             This book already exist.
           </div>
-          <div class="alert alert-danger" *ngIf="editForm.get('title')?.errors['required']">
+          <div class="alert alert-danger" *ngIf="editForm.get('title').errors['required']">
             Please add book title.
           </div>
         </div>
@@ -37,7 +37,7 @@
                placeholder="mm/dd/yyyy"
                required>
         <div *ngIf="editForm.get('date').invalid && (editForm.get('date').dirty || editForm.get('date').touched)">
-          <div class="alert alert-danger" *ngIf="editForm.get('date')?.errors['isValidDate']">
+          <div class="alert alert-danger" *ngIf="editForm.get('date').errors['isValidDate']">
             Please enter valid date mm/dd/yyyy.
           </div>
         </div>
