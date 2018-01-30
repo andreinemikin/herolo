@@ -4,4 +4,5 @@ export interface DialogModel {
   title: string;
   books: Book[];
   book?: Book;
+  editMode: boolean
 }

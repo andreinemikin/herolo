@@ -31,7 +31,8 @@ export class BookListComponent implements OnInit, OnDestroy {
     this.dialog = this.dialogService.addDialog(BookDialogComponent, {
       title: 'Edit book',
       book: book,
-      books: this.books
+      books: this.books,
+      editMode: true
     }).subscribe((editBook: Book) => {
       if(editBook) {
         this.books.splice(index, 1, editBook);
@@ -43,7 +44,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   deleteBook(deletedBook: Book) {
     this.dialog = this.dialogService.addDialog(DeletePromtComponent, {
       title: 'Delete book',
-      message: 'Are you shure you want to delete this book?'
+      message: 'Are you sure you want to delete this book?'
     }).subscribe((isConfirmed) => {
       if (isConfirmed) {
         this.books = this.books.filter((book: Book) => {
@@ -57,7 +58,8 @@ export class BookListComponent implements OnInit, OnDestroy {
     this.dialog = this.dialogService.addDialog(BookDialogComponent, {
       title: 'Please add new book',
       book: new Book(),
-      books: this.books
+      books: this.books,
+      editMode: false
     }).subscribe((book: Book) => {
       if(book) {
         this.books.push(book);

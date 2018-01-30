@@ -3,6 +3,8 @@ import {DialogComponent, DialogService} from 'ng2-bootstrap-modal';
 import {Book} from '../models/Book';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DialogModel} from '../models/Dialog';
+import * as moment from 'moment';
+import {FilterTitlePipe} from '../filter-title.pipe';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -16,8 +18,9 @@ export class BookDialogComponent extends DialogComponent<DialogModel, Book> impl
   books: Book[];
   editForm: FormGroup;
   bookTitles: string[] = [];
+  editMode: boolean;
 
-  constructor(dialogService: DialogService) {
+  constructor(dialogService: DialogService, private filterPipe: FilterTitlePipe) {
     super(dialogService);
   }
 
@@ -28,16 +31,31 @@ export class BookDialogComponent extends DialogComponent<DialogModel, Book> impl
 
     this.editForm = new FormGroup({
       'author': new FormControl(this.book.author, Validators.required),
-      'title': new FormControl(this.book.title, [Validators.required, this.isBookExist.bind(this)]),
-      'date': new FormControl(this.book.date)
+      'title': new FormControl(this.book.title, [Validators.required ]),
+      'date': new FormControl(this.book.date, [Validators.required, this.isValidDate.bind(this)])
     });
+
+    if(!this.editMode) {
+      this.editForm.controls['title'].setValidators(this.isBookExist.bind(this))
+    }
   }
 
+
   isBookExist(control: FormControl): {[s: string]: boolean} {
-    if(this.bookTitles.indexOf(control.value) !== -1) {
-      return {'isExistTitle': true}
+    if(control.value) {
+      let title =  this.filterPipe.transform(this.books, control.value);
+      if(this.bookTitles.indexOf(title) !== -1) {
+        return {'isExistTitle': true}
+      }
     }
     return null;
+  }
+
+  isValidDate(control: FormControl): {[s: string]: boolean} {
+      if(!moment(control.value, 'MM/DD/YYYY', true).isValid()) {
+        return {'isValidDate': true};
+      }
+      return null;
   }
 
   confirm() {

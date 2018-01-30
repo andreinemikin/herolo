@@ -9,6 +9,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DeletePromtComponent} from './delete-promt/delete-promt.component';
 import {FilterTitlePipe} from './filter-title.pipe';
 import {BookDialogComponent} from './book-dialog/book-dialog.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MomentModule} from 'angular2-moment';
 
 
 @NgModule({
@@ -24,13 +27,16 @@ import {BookDialogComponent} from './book-dialog/book-dialog.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FlexLayoutModule,
+    NgbModule.forRoot(),
+    MomentModule,
     BootstrapModalModule.forRoot({container: document.body})
   ],
   entryComponents: [
     BookDialogComponent,
     DeletePromtComponent,
   ],
-  providers: [],
+  providers: [FilterTitlePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {
