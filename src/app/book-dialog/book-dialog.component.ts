@@ -31,20 +31,17 @@ export class BookDialogComponent extends DialogComponent<DialogModel, Book> impl
 
     this.editForm = new FormGroup({
       'author': new FormControl(this.book.author, Validators.required),
-      'title': new FormControl(this.book.title, [Validators.required]),
+      'title': new FormControl(this.book.title, [Validators.required, this.isBookExist.bind(this)]),
       'date': new FormControl(this.book.date, [Validators.required, this.isValidDate.bind(this)])
     });
-
-    if(!this.editMode) {
-      this.editForm.controls['title'].setValidators([Validators.required, this.isBookExist.bind(this)])
-
-    }
   }
-
 
   isBookExist(control: FormControl): {[s: string]: boolean} {
     if(control.value) {
       let title =  this.filterPipe.transform(this.books, control.value);
+      if(this.editMode) {
+        this.bookTitles.splice(this.bookTitles.indexOf(this.book.title), 1);
+      }
       if(this.bookTitles.indexOf(title) !== -1) {
         return {'isExistTitle': true}
       }
