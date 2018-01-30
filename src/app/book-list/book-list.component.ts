@@ -41,15 +41,14 @@ export class BookListComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteBook(deletedBook: Book) {
+  deleteBook(deletedBook: Book, index: number) {
     this.dialog = this.dialogService.addDialog(DeletePromtComponent, {
       title: 'Delete book',
       message: 'Are you sure you want to delete this book?'
     }).subscribe((isConfirmed) => {
       if (isConfirmed) {
-        this.books = this.books.filter((book: Book) => {
-          return book.title !== deletedBook.title;
-        });
+        this.books.splice(index, 1);
+        this.books = this.books.slice();
       }
     });
   }
