@@ -3,8 +3,8 @@ import {DialogComponent, DialogService} from 'ng2-bootstrap-modal';
 import {Book} from '../models/Book';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DialogModel} from '../models/Dialog';
-import * as moment from 'moment';
 import {FilterTitlePipe} from '../filter-title.pipe';
+import {BookDataService} from '../services/book-data.service';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -15,24 +15,26 @@ export class BookDialogComponent extends DialogComponent<DialogModel, Book> impl
 
   title: string;
   book: Book;
+  editBookIndex: number;
   books: Book[];
-  editForm: FormGroup;
+  form: FormGroup;
   bookTitles: string[] = [];
   editMode: boolean;
 
-  constructor(dialogService: DialogService, private filterPipe: FilterTitlePipe) {
+  constructor(dialogService: DialogService, private filterPipe: FilterTitlePipe, private bookService: BookDataService) {
     super(dialogService);
   }
 
   ngOnInit() {
-    this.books.forEach((book) => {
-      this.bookTitles.push(book.title);
-    });
+    this.book = this.editBookIndex? this.bookService.getBook(this.editBookIndex): new Book();
+    this.books = this.bookService.books;
+    this.bookTitles = this.books.map(book => book.title);
 
-    this.editForm = new FormGroup({
+
+    this.form = new FormGroup({
       'author': new FormControl(this.book.author, Validators.required),
       'title': new FormControl(this.book.title, [Validators.required, this.isBookExist.bind(this)]),
-      'date': new FormControl(this.book.date, [Validators.required, this.isValidDate.bind(this)])
+      'date': new FormControl(null, [Validators.required, this.isValidDate.bind(this)])
     });
   }
 
@@ -52,14 +54,14 @@ export class BookDialogComponent extends DialogComponent<DialogModel, Book> impl
   }
 
   isValidDate(control: FormControl): {[s: string]: boolean} {
-      if(!moment(control.value, 'MM/DD/YYYY', true).isValid()) {
-        return {'isValidDate': true};
-      }
-      return null;
+    if(new Date(control.value) > new Date()) {
+      return {'isValidDate': true};
+    }
+    return null;
   }
 
   confirm() {
-    this.result = this.editForm.value;
+    this.result = this.form.value;
     this.close();
   }
 }

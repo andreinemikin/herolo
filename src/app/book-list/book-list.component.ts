@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Book} from '../models/Book';
 import {DialogService} from 'ng2-bootstrap-modal';
 import {BookDialogComponent} from '../book-dialog/book-dialog.component';
-import {DeletePromtComponent} from '../delete-promt/delete-promt.component';
+import {BookDataService} from '../services/book-data.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-book-list',
@@ -13,61 +13,31 @@ import {DeletePromtComponent} from '../delete-promt/delete-promt.component';
 export class BookListComponent implements OnInit, OnDestroy {
 
   books: Book[] = [];
-  dialog;
+  dialog: Subscription;
+  bookSubscription: Subscription;
 
-  constructor(private http: HttpClient, private dialogService: DialogService) { }
+  constructor(private bookService: BookDataService, private dialogService: DialogService) { }
 
   ngOnInit() {
-    this.getBooks();
-  }
-
-  getBooks() {
-    this.http.get('./assets/data.json').subscribe((books: Book[]) => {
+    this.bookService.getBooks();
+    this.bookSubscription = this.bookService.bookList.subscribe((books: Book[]) => {
       this.books = books;
-    });
-  }
-
-  editBook(book: Book, index: number) {
-    this.dialog = this.dialogService.addDialog(BookDialogComponent, {
-      title: 'Edit book',
-      book: book,
-      books: this.books,
-      editMode: true
-    }).subscribe((editBook: Book) => {
-      if(editBook) {
-        this.books.splice(index, 1, editBook);
-        this.books = this.books.slice();
-      }
-    });
-  }
-
-  deleteBook(deletedBook: Book, index: number) {
-    this.dialog = this.dialogService.addDialog(DeletePromtComponent, {
-      title: 'Delete book',
-      message: 'Are you sure you want to delete this book?'
-    }).subscribe((isConfirmed) => {
-      if (isConfirmed) {
-        this.books.splice(index, 1);
-        this.books = this.books.slice();
-      }
     });
   }
 
   addBook() {
     this.dialog = this.dialogService.addDialog(BookDialogComponent, {
-      title: 'Please add new book',
-      book: new Book(),
-      books: this.books,
+      title: 'Please add new book.',
       editMode: false
     }).subscribe((book: Book) => {
       if(book) {
-        this.books.push(book);
-        this.books = this.books.slice();
+        this.bookService.addBook(book);
       }
     });
   }
 
   ngOnDestroy() {
     this.dialog.unsubscribe();
+    this.bookSubscription.unsubscribe();
   }
 }

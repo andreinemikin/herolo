@@ -11,21 +11,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let book of books | filterTitle; let i = index">
-        <td>{{i+1}}</td>
-        <td>{{book.author}}</td>
-        <td>{{book.title}}</td>
-        <td>{{book.date | date: 'MM/dd/yyyy'}}</td>
-        <td class="btn-center">
-          <div class="btn-group">
-            <button class="btn" role="button" (click)="editBook(book, i)">
-              <img src="./../../assets/edit.svg">
-            </button>
-            <button class="btn" role="button" (click)="deleteBook(book, i)">
-              <img src="./../../assets/delete.svg">
-            </button>
-          </div>
-        </td>
+      <tr *ngFor="let book of books | filterTitle; let i = index"
+          app-book
+          [book]="book"
+          [index]="i">
       </tr>
       </tbody>
     </table>

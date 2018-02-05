@@ -12,6 +12,8 @@ import {BookDialogComponent} from './book-dialog/book-dialog.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MomentModule} from 'angular2-moment';
+import {BookDataService} from './services/book-data.service';
+import {BookComponent} from './book/book.component';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import {MomentModule} from 'angular2-moment';
     BookListComponent,
     BookDialogComponent,
     DeletePromtComponent,
-    FilterTitlePipe
+    FilterTitlePipe,
+    BookComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,7 @@ import {MomentModule} from 'angular2-moment';
     BookDialogComponent,
     DeletePromtComponent,
   ],
-  providers: [FilterTitlePipe],
+  providers: [FilterTitlePipe, BookDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
