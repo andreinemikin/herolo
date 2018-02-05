@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 import {Book} from './models/Book';
 
 @Pipe({
@@ -7,13 +7,15 @@ import {Book} from './models/Book';
 export class FilterTitlePipe implements PipeTransform {
 
   transform(books: Book[], title?: string): any {
-    if(!books.length) {return books}
+    if (!books.length) {
+      return books;
+    }
 
-    if(!title) {
+    if (!title) {
       return books.map((book: Book) => {
         book.title = this.replaceSymbol(book.title);
         return book;
-      })
+      });
     }
     return this.replaceSymbol(title);
   }
